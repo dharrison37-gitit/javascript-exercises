@@ -1,25 +1,3 @@
-// The extra null check is required since typeof null === "object" evaluates to true
-// const isObject = (value) => typeof value === "object" && value !== null;
-
-// const totalIntegers = function (obj) {
-//   let count = 0;
-
-//   if (!isObject(obj)) {
-//     return;
-//   }
-
-//   const elements = Object.values(obj);
-
-//   for (const el of elements) {
-//     if (Number.isInteger(el)) {
-//       count++;
-//     } else if (isObject(el)) {
-//       count += totalIntegers(el);
-//     }
-//   }
-//   return count;
-// };
-
 const totalIntegers = (obj) => {
   if (typeof obj !== "object") return;
 
@@ -45,6 +23,8 @@ const totalIntegers = (obj) => {
     for (const key in obj) {
       if (Number.isInteger(obj[key])) {
         count++;
+      } else if (Array.isArray(obj[key] || (typeof obj[key] === "object" && obj[key] !== null))) {
+        count += totalIntegers(obj[key]);
       }
     }
   } else {
@@ -56,6 +36,3 @@ const totalIntegers = (obj) => {
 
 // Do not edit below this line
 module.exports = totalIntegers;
-
-const res = totalIntegers([4, 6, { a: 1, b: { a: [5, 10], b: 11 } }, 9]);
-console.log(res);
